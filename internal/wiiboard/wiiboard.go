@@ -112,8 +112,12 @@ func (w WiiBoard) Listen() {
 			switch e.Type {
 
 			case evdev.EV_SYN:
-				// send current event and reset it
-				w.Events <- curEvent
+				// send current event and reset it.
+				// Don't block on sending if other side is slower than input events
+				select {
+				case w.Events <- curEvent:
+				default:
+				}
 				curEvent = Event{}
 
 			// pressure point
