@@ -19,6 +19,7 @@ func main() {
 	}
 	fmt.Println(battery)
 	go board.Listen()
+	board.Calibrate()
 	for event := range board.Events {
 		fmt.Printf("%+v\n", event)
 	}
